@@ -1,13 +1,10 @@
-import os
-import responder
+import http.server
+import socketserver
 
-api = responder.API()
+PORT = 8000
+Handler = http.server.SimpleHTTPRequestHandler
 
+with socketserver.TCPServer(("", PORT), Handler) as httpd:
+    print("serving at port", PORT)
+    httpd.serve_forever()
 
-@api.route("/")
-def index(req, res):
-    res.text = os.getenv("SAMPLEAPP_MESSAGE", "Hello")
-
-
-if __name__ == "__main__":
-    api.run(address="0.0.0.0", port=80)
